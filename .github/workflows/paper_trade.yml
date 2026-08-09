@@ -1,0 +1,42 @@
+name: Darvas V3 Paper Trade
+
+on:
+  schedule:
+    # 10:35 UTC = 4:05 PM India Standard Time, Monday to Friday.
+    - cron: "35 10 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  paper-trade:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Get strategy files and prior paper-trading state
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run the virtual daily scan
+        run: python darvas_paper_trade.py
+
+      - name: Save virtual portfolio state
+        run: |
+          git config user.name "Darvas Paper Trade Bot"
+          git config user.email "darvas-paper-bot@users.noreply.github.com"
+          git add darvas_paper_output/
+          if git diff --cached --quiet; then
+            echo "No paper-trading changes to save."
+          else
+            git commit -m "Paper-trade update"
+            git push
+          fi
