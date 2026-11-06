@@ -1,33 +1,53 @@
 {
-  "cash": 100000.0,
-  "positions": {},
-  "buys": {
+  "cash": 48100.84602860197,
+  "positions": {
     "BLUEJET.NS": {
-      "top": 549.0,
-      "bottom": 492.1000061035156,
-      "stop": 491.11580609130857
+      "shares": 12,
+      "entry_date": "2026-11-06",
+      "entry": 572.286,
+      "entry_cost": 2.0602295999999996,
+      "initial_stop": 491.11580609130857,
+      "trailing_stop": 515.0573999999999,
+      "high_close": 572.286
     },
     "LENSKART.NS": {
-      "top": 699.0,
-      "bottom": 648.1500244140625,
-      "stop": 646.8537243652344
+      "shares": 14,
+      "entry_date": "2026-11-06",
+      "entry": 716.2579744262695,
+      "entry_cost": 3.0082834925903317,
+      "initial_stop": 646.8537243652344,
+      "trailing_stop": 652.275,
+      "high_close": 724.75
     },
     "MOTHERSON.NS": {
-      "top": 162.77000427246094,
-      "bottom": 155.24000549316406,
-      "stop": 154.92952548217772
+      "shares": 84,
+      "entry_date": "2026-11-06",
+      "entry": 166.72331938934326,
+      "entry_cost": 4.20142764861145,
+      "initial_stop": 154.92952548217772,
+      "trailing_stop": 154.92952548217772,
+      "high_close": 166.72331938934326
     },
     "BPCL.NS": {
-      "top": 306.54998779296875,
-      "bottom": 287.0,
-      "stop": 286.426
+      "shares": 37,
+      "entry_date": "2026-11-06",
+      "entry": 313.0564438934326,
+      "entry_cost": 3.474926527217101,
+      "initial_stop": 286.426,
+      "trailing_stop": 287.909994506836,
+      "high_close": 319.8999938964844
     },
     "BAJFINANCE.NS": {
-      "top": 995.7999877929688,
-      "bottom": 940.0999755859375,
-      "stop": 938.2197756347656
+      "shares": 9,
+      "entry_date": "2026-11-06",
+      "entry": 1044.522,
+      "entry_cost": 2.8202094,
+      "initial_stop": 938.2197756347656,
+      "trailing_stop": 978.975,
+      "high_close": 1087.75
     }
   },
+  "buys": {},
   "sells": {},
-  "last_processed": "2026-11-05"
+  "last_processed": "2026-11-06"
 }
