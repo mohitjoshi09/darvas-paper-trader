@@ -7,7 +7,10 @@ from __future__ import annotations
 
 import json
 import math
+import os
+import smtplib
 from datetime import date
+from email.message import EmailMessage
 from pathlib import Path
 
 import numpy as np
@@ -43,6 +46,25 @@ def close_price(data: dict[str, pd.DataFrame], ticker: str, day: pd.Timestamp) -
     return float(series.iloc[-1]) if len(series) else 0.0
 
 
+def mark_positions(data: dict[str, pd.DataFrame], positions: dict, day: pd.Timestamp) -> float:
+    """Store the latest virtual valuation on every open position for the dashboard."""
+    total_value = 0.0
+    for ticker, position in positions.items():
+        if ticker not in data:
+            continue
+        last_price = close_price(data, ticker, day)
+        if last_price <= 0:
+            continue
+        market_value = position["shares"] * last_price
+        invested = position["shares"] * position["entry"] + position["entry_cost"]
+        position["last_price"] = last_price
+        position["market_value"] = market_value
+        position["unrealized_pnl"] = market_value - invested
+        position["unrealized_return_pct"] = position["unrealized_pnl"] / invested if invested else 0.0
+        total_value += market_value
+    return total_value
+
+
 def main() -> None:
     PAPER_DIR.mkdir(exist_ok=True)
     today = pd.Timestamp(date.today())
@@ -61,7 +83,8 @@ def main() -> None:
         return
 
     bench = benchmark["Adj Close"].astype(float)
-    market_ok = bool(bench.iloc[-1] > bench.rolling(200, min_periods=200).mean().iloc[-1])
+    nifty_sma_200 = bench.rolling(200, min_periods=200).mean()
+    market_ok = bool(bench.iloc[-1] > nifty_sma_200.iloc[-1])
     nifty_6m = bench.pct_change(v3.RELATIVE_STRENGTH_DAYS).iloc[-1]
     if pd.isna(nifty_6m):
         print("Not enough NIFTY history for the 200-day/6-month filters. Nothing changed.")
@@ -95,7 +118,7 @@ def main() -> None:
         risk = fill - order["stop"]
         if risk <= 0:
             continue
-        positions_value = sum(p["shares"] * close_price(raw, symbol, today) for symbol, p in state["positions"].items())
+        positions_value = mark_positions(raw, state["positions"], today)
         equity = state["cash"] + positions_value
         shares = min(
             math.floor(equity * v3.RISK_PER_TRADE / risk),
@@ -122,6 +145,7 @@ def main() -> None:
             state["sells"][ticker] = "trailing_stop" if position["trailing_stop"] > position["initial_stop"] else "initial_stop"
 
     # Scan today's completed candles and queue qualifying entries for tomorrow.
+    # New entries require NIFTY to be above its 200-day moving average.
     if market_ok:
         available = v3.MAX_POSITIONS - len(state["positions"])
         candidates = []
@@ -139,14 +163,21 @@ def main() -> None:
         for _, ticker, (top, bottom) in sorted(candidates, reverse=True)[:max(available, 0)]:
             state["buys"][ticker] = {"top": top, "bottom": bottom, "stop": bottom * (1 - v3.INITIAL_STOP_BUFFER)}
 
-    positions_value = sum(p["shares"] * close_price(raw, ticker, today) for ticker, p in state["positions"].items())
+    positions_value = mark_positions(raw, state["positions"], today)
     equity = state["cash"] + positions_value
-    append_csv(EQUITY_PATH, {"date": str(today.date()), "cash": state["cash"], "positions_value": positions_value, "equity": equity, "open_positions": len(state["positions"]), "market_ok": market_ok})
+    append_csv(EQUITY_PATH, {
+        "date": str(today.date()),
+        "cash": state["cash"],
+        "positions_value": positions_value,
+        "equity": equity,
+        "open_positions": len(state["positions"]),
+        "market_ok": market_ok,
+    })
     state["last_processed"] = str(today.date())
     save_state(state)
 
     print(f"Paper-trading update for {today.date()}")
-    print(f"NIFTY regime: {'ON' if market_ok else 'OFF'} | Virtual equity: ₹{equity:,.2f}")
+    print(f"NIFTY 200-day filter: {'ON' if market_ok else 'OFF'} | Virtual equity: ₹{equity:,.2f}")
     print(f"Open positions: {len(state['positions'])} | Buys queued for next open: {list(state['buys'])}")
     print(f"Sells queued for next open: {list(state['sells'])}")
     print(f"Files saved in: {PAPER_DIR.resolve()}")
