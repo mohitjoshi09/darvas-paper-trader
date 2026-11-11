@@ -9,10 +9,10 @@
       "initial_stop": 491.11580609130857,
       "trailing_stop": 515.0573999999999,
       "high_close": 572.286,
-      "last_price": 543.5499877929688,
-      "market_value": 6522.599853515625,
-      "unrealized_pnl": -346.8923760843736,
-      "unrealized_return_pct": -0.050497527981711206
+      "last_price": 535.75,
+      "market_value": 6429.0,
+      "unrealized_pnl": -440.4922295999986,
+      "unrealized_return_pct": -0.0641229678813754
     },
     "LENSKART.NS": {
       "shares": 14,
@@ -22,10 +22,10 @@
       "initial_stop": 646.8537243652344,
       "trailing_stop": 652.275,
       "high_close": 724.75,
-      "last_price": 718.7999877929688,
-      "market_value": 10063.199829101562,
-      "unrealized_pnl": 32.57990364119905,
-      "unrealized_return_pct": 0.0032480448749236976
+      "last_price": 723.0999755859375,
+      "market_value": 10123.399658203125,
+      "unrealized_pnl": 92.77973274276155,
+      "unrealized_return_pct": 0.009249650912129776
     },
     "MOTHERSON.NS": {
       "shares": 84,
@@ -34,11 +34,11 @@
       "entry_cost": 4.20142764861145,
       "initial_stop": 154.92952548217772,
       "trailing_stop": 154.92952548217772,
-      "high_close": 166.72331938934326,
-      "last_price": 161.91000366210938,
-      "market_value": 13600.440307617188,
-      "unrealized_pnl": -408.5199487362588,
-      "unrealized_return_pct": -0.029161332551499233
+      "high_close": 169.69000244140625,
+      "last_price": 169.69000244140625,
+      "market_value": 14253.960205078125,
+      "unrealized_pnl": 244.9999487246787,
+      "unrealized_return_pct": 0.017488803183203016
     },
     "BPCL.NS": {
       "shares": 37,
@@ -48,10 +48,10 @@
       "initial_stop": 286.426,
       "trailing_stop": 287.909994506836,
       "high_close": 319.8999938964844,
-      "last_price": 316.0,
-      "market_value": 11692.0,
-      "unrealized_pnl": 105.43664941577845,
-      "unrealized_return_pct": 0.009099907041069437
+      "last_price": 315.25,
+      "market_value": 11664.25,
+      "unrealized_pnl": 77.68664941577845,
+      "unrealized_return_pct": 0.006704891438915
     },
     "BAJFINANCE.NS": {
       "shares": 9,
@@ -61,13 +61,13 @@
       "initial_stop": 938.2197756347656,
       "trailing_stop": 978.975,
       "high_close": 1087.75,
-      "last_price": 1064.8499755859375,
-      "market_value": 9583.649780273438,
-      "unrealized_pnl": 180.13157087343643,
-      "unrealized_return_pct": 0.019155763498535285
+      "last_price": 1078.800048828125,
+      "market_value": 9709.200439453125,
+      "unrealized_pnl": 305.68223005312393,
+      "unrealized_return_pct": 0.03250721945192343
     }
   },
   "buys": {},
   "sells": {},
-  "last_processed": "2026-11-09"
+  "last_processed": "2026-11-11"
 }
